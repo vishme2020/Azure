@@ -1,0 +1,24 @@
+---
+- hosts: web
+  become: yes
+
+  vars_prompt:
+   - name: "source"
+     prompt: "Enter the source"
+
+
+  tasks:
+  - name: Ensure apache is installed
+    apt: name=apache2 update_cache=yes state=latest
+
+  - name: ensure service is running
+    service: name=apache2 enabled=yes state=started
+
+  - name: create directory
+    file: path=/var/www/html/ansible state=directory
+
+  - name: deploy webpage to the path
+    copy: src={{source}} dest=/var/www/html/ansible/ mode=0644
+
+  - debug: msg="src is {{source}}"
+

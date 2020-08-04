@@ -1,0 +1,17 @@
+---
+- hosts: web
+  become: yes
+
+  vars:
+    source: index.html
+
+
+  tasks:
+  - name: copy the wbesite config file
+    copy: src=apache2.conf dest=/etc/httpd/conf/httpd.conf
+    notify:
+      - apache restart
+
+  handlers:
+  - name: apache restart
+    service: name=apache2 enabled=yes state=restarted

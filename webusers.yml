@@ -1,0 +1,8 @@
+---
+- hosts: web
+  become: yes
+  tasks:
+          - shell: whoami
+            register: username
+
+          - file: path=/tmp/info.txt owner={{username}}

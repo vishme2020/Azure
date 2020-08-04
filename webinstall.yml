@@ -1,0 +1,41 @@
+---
+- hosts: web
+  become: yes
+
+  vars:
+    source: index.html
+
+
+  tasks:
+  - name: Ensure apache is installed
+    apt: name=apache2 update_cache=yes state=latest
+
+  - name: ensure service is running
+    service: name=apache2 enabled=yes state=started  
+
+  - name: create directory
+    file: path=/var/www/html/ansible state=directory
+
+  - name: deploy webpage to the path
+    copy: src={{source}} dest=/var/www/html/ansible/ mode=0644
+  
+  - debug: msg="src is {{source}}"  
+
+
+- hosts: db
+  become: yes
+  tasks:
+  - name: Ensure mysql is installed
+    apt: name=mysql-server  state=present
+
+  - name: ensure mysql service is running
+    service: name=mysqld state=started
+
+  - name: make sure mysql python is installed
+    apt: name=MYSQL-python state=present
+
+  - name: create database
+    mysql_db: name=devops state=present
+
+  - name: create username auser
+    mysql_user: name=auser password=password priv='*.*:ALL' state=present

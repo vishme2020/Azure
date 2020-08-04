@@ -1,0 +1,10 @@
+---
+- hosts: web
+  become: yes
+  vars:
+    username: sathi
+    doc_root: /var/www/html
+
+  tasks:
+  - name: copy site files
+    template: src=templates/index.j2 dest={{doc_root}}/index.html mode=0644
