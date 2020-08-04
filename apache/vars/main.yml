@@ -1,0 +1,3 @@
+---
+# vars file for apache
+doc_root: /var/www/html/ansible
